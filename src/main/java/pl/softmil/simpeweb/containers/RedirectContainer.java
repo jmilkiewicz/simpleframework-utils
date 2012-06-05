@@ -3,7 +3,7 @@ package pl.softmil.simpeweb.containers;
 import java.io.IOException;
 import java.net.*;
 
-import org.apache.http.HttpHeaders;
+import org.apache.http.*;
 import org.simpleframework.http.*;
 import org.simpleframework.http.core.Container;
 
@@ -17,7 +17,7 @@ public class RedirectContainer implements Container {
     @Override
     public void handle(Request req, Response resp) {
         try {
-            resp.setCode(302);
+            resp.setCode(HttpStatus.SC_MOVED_TEMPORARILY);
             //String redirectTargetUrl = getRedirectToFullUrl(req);
             String redirectTargetUrl = redirectTo;
             resp.set(HttpHeaders.LOCATION, redirectTargetUrl);
