@@ -3,6 +3,7 @@ package pl.softmil.simpeweb.router;
 import java.io.IOException;
 import java.util.concurrent.*;
 
+import org.apache.http.*;
 import org.simpleframework.http.*;
 import org.simpleframework.http.core.Container;
 
@@ -13,15 +14,15 @@ public class SimpleRouter implements Container {
     public void handle(Request req, Response resp) {        
         Container handler = getHandler(req.getPath());
         if (handler == null) {
-            signalNonHandlerFound(req, resp);
+            signalNonHandlerFound(resp);
         } else {
             handler.handle(req, resp);
         }
     }
 
-    private void signalNonHandlerFound(Request req, Response resp) {
+    private void signalNonHandlerFound(Response resp) {
         try {
-            resp.setCode(404);
+            resp.setCode(HttpStatus.SC_NOT_FOUND);
             resp.commit();
             resp.close();
         } catch (IOException e) {
@@ -40,7 +41,7 @@ public class SimpleRouter implements Container {
     }
 
     public SimpleRouter addHandler(String discriminator, Container handler) {
-        Container putIfAbsent = handlers.putIfAbsent(discriminator, handler);
+        handlers.putIfAbsent(discriminator, handler);
         return this;
     }
 }
