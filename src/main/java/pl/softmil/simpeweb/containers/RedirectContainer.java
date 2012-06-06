@@ -9,15 +9,25 @@ import org.simpleframework.http.core.Container;
 
 public class RedirectContainer implements Container {
     private final String redirectTo;
-
+    private int redirectCode = HttpStatus.SC_MOVED_TEMPORARILY;
+    
     public RedirectContainer(String redirectTo) {
         this.redirectTo = redirectTo;
+    }
+    
+    public RedirectContainer withCustomerRedirectCode(int newRedirectCode){
+        this.redirectCode = newRedirectCode;
+        return this;
+    }
+    
+    public int getRedirectCode() {
+        return redirectCode;
     }
 
     @Override
     public void handle(Request req, Response resp) {
         try {
-            resp.setCode(HttpStatus.SC_MOVED_TEMPORARILY);
+            resp.setCode(redirectCode);
             //String redirectTargetUrl = getRedirectToFullUrl(req);
             String redirectTargetUrl = redirectTo;
             resp.set(HttpHeaders.LOCATION, redirectTargetUrl);
