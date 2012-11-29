@@ -6,9 +6,9 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.hamcrest.Matchers;
-import org.junit.*;
+import org.junit.Rule;
+import org.junit.Test;
 
-import pl.softmil.simpeweb.containers.LogStub.LogLevel;
 import pl.softmil.simpeweb.interceptor.response.SetHeadersInterceptor;
 import pl.softmil.simpeweb.junit.StartStopSimpleWebServerRule;
 
@@ -29,7 +29,7 @@ public class DumbRequestResponseHeadersContainerTest {
         }
     };
 
-    @Test(timeout = 1000)
+    @Test(timeout = 2000)
     public void requestResponseHeadersDumped() throws IOException {
         HttpClient httpclient = new DefaultHttpClient();
         httpclient.execute(new HttpGet("http://localhost:32331"));
